@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class NamesAdapter extends RecyclerView.Adapter<NamesAdapter.ViewHolder> {
-    private List<String> names;
+    private final List<String> names;
 
     public NamesAdapter(List<String> names) {
         this.names = names;

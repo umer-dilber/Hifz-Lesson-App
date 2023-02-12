@@ -35,10 +35,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("Sabqi", user.getSabqi());
         values.put("Sabaq", user.getSabaq());
         values.put("Manzil", user.getManzil());
-        db.insert("users", null, values);
-        long flag = db.insert("SalahRecord", null, values);
+        long flag = db.insert("Users", null, values);
         db.close();
-        return (flag != -1);
+        if (flag == -1) {
+            return false; // insertion failed
+        } else {
+            return true; // insertion successful
+        }
     }
 
     public void updateValues(Users user) {
@@ -53,8 +56,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<String> getAllNames() {
         List<String> namesList = new ArrayList<>();
-        String selectQuery = "SELECT Name FROM users";
-        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT Name FROM Users";
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null && cursor.getCount() > 0) {
             int nameIndex = cursor.getColumnIndex("Name");
