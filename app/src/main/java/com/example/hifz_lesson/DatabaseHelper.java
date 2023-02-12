@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertUser(Users user){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("name", user.getName());
+        values.put("Name", user.getName());
         values.put("Sabqi", user.getSabqi());
         values.put("Sabaq", user.getSabaq());
         values.put("Manzil", user.getManzil());
@@ -53,11 +53,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<String> getAllNames() {
         List<String> namesList = new ArrayList<>();
-        String selectQuery = "SELECT name FROM users";
+        String selectQuery = "SELECT Name FROM users";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null && cursor.getCount() > 0) {
-            int nameIndex = cursor.getColumnIndex("name");
+            int nameIndex = cursor.getColumnIndex("Name");
             while (cursor.moveToNext()) {
                 String name = cursor.getString(nameIndex);
                 namesList.add(name);
