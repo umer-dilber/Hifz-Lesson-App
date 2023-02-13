@@ -20,7 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE Users (Name String UNIQUE, Sabqi INTEGER, Sabaq INTEGER, Manzil INTEGER)");
+        db.execSQL("CREATE TABLE Users (Name String UNIQUE, Date String, Sabqi INTEGER, Sabaq INTEGER, Manzil INTEGER)");
+        db.execSQL("CREATE UNIQUE INDEX idx_users_date_name ON users(Date, Name)");
     }
 
     @Override
@@ -32,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("Name", user.getName());
+        values.put("Date", user.getDate());
         values.put("Sabqi", user.getSabqi());
         values.put("Sabaq", user.getSabaq());
         values.put("Manzil", user.getManzil());
@@ -56,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<String> getAllNames() {
         List<String> namesList = new ArrayList<>();
-        String selectQuery = "SELECT Name FROM Users";
+        String selectQuery = "SELECT DISTINCT Name FROM Users";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null && cursor.getCount() > 0) {

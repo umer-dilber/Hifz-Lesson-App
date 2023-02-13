@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerview);
         DatabaseHelper database = new DatabaseHelper(this);
         names = database.getAllNames(); // Retrieve the names from the database?
-        Toast.makeText(this, "Hello" + (names.size()), Toast.LENGTH_LONG).show();
         NamesAdapter adapter = new NamesAdapter(names);
         recyclerView.setAdapter(adapter);
 
