@@ -75,5 +75,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return namesList;
     }
 
+    public boolean deleteUserByName(String name) {
+        SQLiteDatabase db = getWritableDatabase();
+        String whereClause = "Name=?";
+        String[] whereArgs = { name };
+        int deletedRows = db.delete("Users", whereClause, whereArgs);
+        db.close();
+        // deletion failed
+        return deletedRows > 0; // deletion successful
+    }
+
+    public List<Users> getAllEntriesByName(String name) {
+        List<Users> entriesList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM Users WHERE Name=?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{name});
+        if (cursor != null && cursor.getCount() > 0) {
+            int nameIndex = cursor.getColumnIndex("Name");
+            int dateIndex = cursor.getColumnIndex("Date");
+            int sabqiIndex = cursor.getColumnIndex("Sabqi");
+            int sabaqIndex = cursor.getColumnIndex("Sabaq");
+            int manzilIndex = cursor.getColumnIndex("Manzil");
+            while (cursor.moveToNext()) {
+                String entryName = cursor.getString(nameIndex);
+                String date = cursor.getString(dateIndex);
+                int sabqi = cursor.getInt(sabqiIndex);
+                int sabaq = cursor.getInt(sabaqIndex);
+                int manzil = cursor.getInt(manzilIndex);
+                Users entry = new Users(entryName);
+                entry.setDate(date);
+                entry.setSabaq(sabaq);
+                entry.setSabqi(sabqi);
+                entry.setManzil(manzil);
+                entriesList.add(entry);
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return entriesList;
+    }
+
 
 }

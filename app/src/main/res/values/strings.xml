@@ -3,5 +3,10 @@
     <string name="add">Add</string>
     <string name="view">view</string>
     <string name="delete">delete</string>
-    <string name="edit">Edit</string>
+    <string name="edit">edit</string>
+    <string name="name">Name: </string>
+    <string name="date">Date: </string>
+    <string name="sabaq">Sabaq: </string>
+    <string name="sabqi">Sabqi: </string>
+    <string name="manzil">Manzil: </string>
 </resources>
