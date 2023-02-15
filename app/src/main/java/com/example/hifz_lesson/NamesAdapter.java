@@ -46,6 +46,13 @@ public class NamesAdapter extends RecyclerView.Adapter<NamesAdapter.ViewHolder> 
             intent.putExtra("my_data", (holder.nameTextView.getText()).toString());
             v.getContext().startActivity(intent);
         });
+
+        holder.btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), edit_details.class);
+            intent.putExtra("my_data", (holder.nameTextView.getText()).toString());
+            v.getContext().startActivity(intent);
+        });
+
     }
 
     @Override
