@@ -23,6 +23,7 @@ public class ViewData extends AppCompatActivity {
         txtName.setText(name);
         DatabaseHelper db = new DatabaseHelper(this);
         List<Users> items = db.getAllEntriesByName(name);
+        items = items.subList(1, items.size());
         ViewDataAdapter adapt = new ViewDataAdapter(items);
         resView.setAdapter(adapt);
     }

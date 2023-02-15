@@ -8,13 +8,13 @@ public class Users {
     private Integer manzil;
     public Users(){
         name = "";
-        sabaq = manzil = sabqi = 0;
+        sabaq = 0; manzil = 0; sabqi = 0;
         date = "";
     }
     public Users(String a_name){
         name = a_name;
-        sabaq = manzil = sabqi = 0;
-        date = "14/02/2023";
+        sabaq = 0; manzil = 0; sabqi = 0;
+        date = "14-02-2023";
     }
 
     public void setName(String a_name){

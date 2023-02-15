@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,7 @@ public class ViewDataAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Users user = users.get(position);
+        Toast.makeText(holder.itemView.getContext(), "Hi " + users.size(), Toast.LENGTH_SHORT).show();
         holder.txtDate.setText(user.getDate());
         holder.txtSabaq.setText((user.getSabaq()).toString());
         holder.txtSabqi.setText((user.getSabqi()).toString());

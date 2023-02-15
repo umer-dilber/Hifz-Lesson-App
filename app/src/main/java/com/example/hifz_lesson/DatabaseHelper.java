@@ -20,8 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE Users (Name String UNIQUE, Date String, Sabqi INTEGER, Sabaq INTEGER, Manzil INTEGER)");
-        db.execSQL("CREATE UNIQUE INDEX idx_users_date_name ON users(Date, Name)");
+        db.execSQL("CREATE TABLE Users (Name String, Date String, Sabqi INTEGER, Sabaq INTEGER, Manzil INTEGER, UNIQUE(Name, Date))");
     }
 
     @Override
@@ -31,6 +30,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean insertUser(Users user){
         SQLiteDatabase db = getWritableDatabase();
+
+        String[] columns = {"Name", "Date", "Sabqi", "Sabaq", "Manzil"};
+        String selection = "Name=? AND Date=?";
+        String[] selectionArgs = {user.getName(), user.getDate()};
+
+        SQLiteDatabase dbr = getReadableDatabase();
+        Cursor cursor = dbr.query("Users", columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.close();
+            db.close();
+            return false;
+        }
+
         ContentValues values = new ContentValues();
         values.put("Name", user.getName());
         values.put("Date", user.getDate());
@@ -38,22 +51,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("Sabaq", user.getSabaq());
         values.put("Manzil", user.getManzil());
         long flag = db.insert("Users", null, values);
+        cursor.close();
         db.close();
         if (flag == -1) {
-            return false; // insertion failed
+            return false;
         } else {
-            return true; // insertion successful
+            return true;
         }
     }
 
-    public void updateValues(Users user) {
+
+    public boolean updateValues(Users user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("Date", user.getDate());
         values.put("Sabqi", user.getSabqi());
         values.put("Sabaq", user.getSabaq());
         values.put("Manzil", user.getManzil());
-        db.update("Users", values, "Name=?", new String[] { user.getName() });
+        int rowsAffected = db.update("Users", values, "Name=?", new String[] { user.getName() });
         db.close();
+        return rowsAffected > 0;
     }
 
     public List<String> getAllNames() {
@@ -90,6 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM Users WHERE Name=?";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{name});
+
         if (cursor != null && cursor.getCount() > 0) {
             int nameIndex = cursor.getColumnIndex("Name");
             int dateIndex = cursor.getColumnIndex("Date");

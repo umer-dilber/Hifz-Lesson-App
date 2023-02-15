@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,14 +18,16 @@ import java.util.Locale;
 
 public class edit_details extends AppCompatActivity implements View.OnClickListener {
     TextView txtName;
-    EditText date;
+    EditText date, sabaq, sabqi, manzil;
     int mYear, mMonth, mDay;
+    Button btnSave;
+    String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_details);
         Intent intent = getIntent();
-        String name = intent.getStringExtra("my_data");
+        name = intent.getStringExtra("my_data");
         txtName = findViewById(R.id.textview_Name);
         txtName.setText(name);
 
@@ -32,6 +35,12 @@ public class edit_details extends AppCompatActivity implements View.OnClickListe
         String dateStr = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         date.setText(dateStr);
         date.setOnClickListener(this);
+
+        sabaq = findViewById(R.id.edittext_sabaq);
+        sabqi = findViewById(R.id.edittext_sabqi);
+        manzil = findViewById(R.id.edittext_manzil);
+        btnSave = findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(this);
     }
 
     @Override
@@ -54,6 +63,21 @@ public class edit_details extends AppCompatActivity implements View.OnClickListe
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
+        }
+
+        if (view == btnSave){
+            Users user = new Users(name);
+            user.setDate(date.getText().toString());
+            user.setSabaq(Integer.parseInt(sabaq.getText().toString()));
+            user.setSabqi(Integer.parseInt(sabqi.getText().toString()));
+            user.setManzil(Integer.parseInt(manzil.getText().toString()));
+            DatabaseHelper db = new DatabaseHelper(this);
+            if (!(db.insertUser(user))){
+                Toast.makeText(this, "Values not updated", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                finish();
+            }
         }
     }
 }
