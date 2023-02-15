@@ -60,19 +60,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-
-    public boolean updateValues(Users user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("Date", user.getDate());
-        values.put("Sabqi", user.getSabqi());
-        values.put("Sabaq", user.getSabaq());
-        values.put("Manzil", user.getManzil());
-        int rowsAffected = db.update("Users", values, "Name=?", new String[] { user.getName() });
-        db.close();
-        return rowsAffected > 0;
-    }
-
     public List<String> getAllNames() {
         List<String> namesList = new ArrayList<>();
         String selectQuery = "SELECT DISTINCT Name FROM Users";

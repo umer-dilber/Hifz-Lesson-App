@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 Users user = new Users(name);
                 boolean flag =  database.insertUser(user);
                 if (flag){
-                    Toast.makeText(this, "User added", Toast.LENGTH_LONG).show();
                     names = database.getAllNames(); // Retrieve the names from the database?
                     NamesAdapter adapter1 = new NamesAdapter(names);
                     recyclerView.setAdapter(adapter1);
